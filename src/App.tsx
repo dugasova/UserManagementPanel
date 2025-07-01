@@ -1,7 +1,34 @@
-import React from 'react'
+import React from 'react';
+import './App.scss';
+import Layout from './pages/Layout';
+import HomeRouter from './routes/HomeRouter';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import UserDetailsRoute from './routes/UserDetailsRoute';
 
-export default function App() {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Layout />,
+      children: [
+        {
+          path: `/`,
+          element: <HomeRouter />
+        },
+          {
+      path: '/users',
+      element: <UserDetailsRoute />
+    },
+      {
+      path: '/users/:id',
+      element: <UserDetailsRoute />
+    },
+      ]
+    }
+  ]);
+  export default function App() {
+  
   return (
-    <div>App</div>
+    <RouterProvider router={router} />
+   
   )
 }
