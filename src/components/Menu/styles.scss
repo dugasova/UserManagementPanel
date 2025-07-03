@@ -3,58 +3,94 @@
   justify-content: space-between;
   align-items: center;
   background-color: #ffffff;
-  /* White background */
   padding: 15px 30px;
-  /* Adjusted padding */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow */
   font-family: 'Arial', sans-serif;
-  /* Modern font */
   width: 100%;
-  /* Ensure the menu takes full width */
   flex-wrap: nowrap;
-  /* Prevent menu items from wrapping */
+  position: relative; // For absolute positioning of dropdown
+
+  @media (max-width: 768px) {
+    padding: 10px 20px; // Adjust padding
+    flex-direction: row; // Keep items in a row for mobile, but allow dropdown
+    justify-content: space-between;
+    align-items: center;
+  }
+
 
   &__logo {
     width: 40px;
-    /* Slightly smaller logo */
     height: 40px;
     margin-right: 15px;
-    /* Adjusted margin */
     border-radius: 50%;
-    /* Circular logo */
     object-fit: cover;
     /* Ensure logo covers the area */
   }
 
-  .menu {
-    &__list {
+  &__hamburger {
+    display: none; // Hidden by default
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+
+    @media (max-width: 768px) {
+      display: block; // Show hamburger on mobile
+    }
+  }
+
+  &__list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    @media (max-width: 768px) {
+      display: none; // Hide horizontal menu on mobile
+      flex-direction: column;
+      position: absolute;
+      top: 100%; // Position below the header
+      left: 0;
+      width: 100%;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+
+      &--open {
+        display: flex; // Show dropdown when open
+      }
+    }
+
+    &-item {
+      margin-right: 20px;
+      /* Spacing between menu items */
       display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
 
-      &-item {
-        margin-right: 20px;
-        /* Spacing between menu items */
-        display: flex;
+      @media (max-width: 768px) {
+        margin: 0; // Remove horizontal spacing for dropdown items
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #eee; // Separator for dropdown items
+      }
 
-        &:last-child {
-          margin-right: 0;
+      &:last-child {
+        margin-right: 0;
+        @media (max-width: 768px) {
+          border-bottom: none; // No border for the last item
         }
+      }
 
-        a {
-          text-decoration: none;
-          color: #333;
-          /* Darker text color */
-          font-size: 1rem;
-          transition: color 0.3s ease;
-          /* Smooth color transition */
+      a {
+        text-decoration: none;
+        color: #333;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+        padding: 15px 0; // Add padding for dropdown items
+        display: block; // Make links block-level for full width click area
 
-          &:hover {
-            color: #007bff;
-            /* Highlight on hover */
-          }
+        &:hover {
+          color: #007bff;
         }
       }
     }

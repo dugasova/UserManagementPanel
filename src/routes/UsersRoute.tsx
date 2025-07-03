@@ -1,8 +1,11 @@
 import React from 'react';
 import Users from '../components/Users/Users';
 
-export default function AllUsersRoute() {
+export default function UsersRoute() {
   return (
-   <Users />
+    <>
+      <p>Users Route</p>
+      <Users />
+    </>
   )
 }

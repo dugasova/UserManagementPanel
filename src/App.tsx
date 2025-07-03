@@ -1,34 +1,42 @@
 import React from 'react';
-import './App.scss';
-import Layout from './pages/Layout';
-import HomeRouter from './routes/HomeRouter';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import Layout from './pages/Layout'
+import { createBrowserRouter, RouterProvider} from 'react-router-dom';
+import HomeRoute from './routes/HomeRoute';
+import LoginRoute from './routes/LoginRoute';
+import ErrorRoute from './routes/ErrorRoute';
+import UsersRoute from './routes/UsersRoute';
 import UserDetailsRoute from './routes/UserDetailsRoute';
+
+
+export default function App() {
 
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: `/`,
       element: <Layout />,
       children: [
         {
           path: `/`,
-          element: <HomeRouter />
+          element: <HomeRoute />
         },
-          {
-      path: '/users',
-      element: <UserDetailsRoute />
-    },
-      {
-      path: '/users/:id',
-      element: <UserDetailsRoute />
-    },
-      ]
+        {
+          path: `login`,
+          element:<LoginRoute />
+        },
+        {
+          path:  `users`,
+          element: <UsersRoute />
+        },
+        {
+          path: `users/:id`,
+          element: <UserDetailsRoute />
+        }
+      ],
+      errorElement: <ErrorRoute />
     }
-  ]);
-  export default function App() {
-  
+  ])
   return (
     <RouterProvider router={router} />
-   
   )
 }

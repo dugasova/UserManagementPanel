@@ -1,8 +1,8 @@
 import React from 'react'
-import UserDetail from '../components/UserDetail/UserDetail'
+import UserDetails from '../components/UserDetail/UserDetails'
 
 export default function UserDetailsRoute() {
   return (
-    <UserDetail />
+    <UserDetails />
   )
 }

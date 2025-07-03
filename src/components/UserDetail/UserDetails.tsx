@@ -1,8 +1,8 @@
 import React from 'react';
 import './styles.scss';
 
-export default function UserDetail() {
+export default function UserDetails() {
   return (
-    <div>UserDetail</div>
+    <div>UserDetails</div>
   )
 }
