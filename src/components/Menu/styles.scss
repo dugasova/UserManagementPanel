@@ -1,0 +1,62 @@
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  /* White background */
+  padding: 15px 30px;
+  /* Adjusted padding */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
+  font-family: 'Arial', sans-serif;
+  /* Modern font */
+  width: 100%;
+  /* Ensure the menu takes full width */
+  flex-wrap: nowrap;
+  /* Prevent menu items from wrapping */
+
+  &__logo {
+    width: 40px;
+    /* Slightly smaller logo */
+    height: 40px;
+    margin-right: 15px;
+    /* Adjusted margin */
+    border-radius: 50%;
+    /* Circular logo */
+    object-fit: cover;
+    /* Ensure logo covers the area */
+  }
+
+  .menu {
+    &__list {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      &-item {
+        margin-right: 20px;
+        /* Spacing between menu items */
+        display: flex;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        a {
+          text-decoration: none;
+          color: #333;
+          /* Darker text color */
+          font-size: 1rem;
+          transition: color 0.3s ease;
+          /* Smooth color transition */
+
+          &:hover {
+            color: #007bff;
+            /* Highlight on hover */
+          }
+        }
+      }
+    }
+  }
+}

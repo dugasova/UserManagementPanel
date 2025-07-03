@@ -1,6 +1,8 @@
 import React from 'react';
 import './styles.scss';
 import { NavLink } from 'react-router-dom';
+import Logo from './../../assets/logo.png';
+
 
 export default function Menu() {
   const menuItems = [
@@ -27,9 +29,13 @@ export default function Menu() {
   ]
   return (
     <nav className='menu'>
-      <ul>
+      <div className='menu__logo'>
+        <img className='menu__logo' src={Logo} alt="Logo" />
+      </div>
+   
+      <ul className='menu__list'>
         {menuItems.map((item, index) => (
-          <li key={index}>
+          <li className='menu__list-item' key={index}>
             <NavLink
               to={item.path}>
               {item.title}

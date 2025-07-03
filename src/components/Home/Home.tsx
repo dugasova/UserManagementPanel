@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import getUsers from '../../services/user';
 
-
-
 export default function Home() {
   const [usersList, setUsersList] = useState([]);
 
@@ -33,7 +31,5 @@ export default function Home() {
         </li>
       ))}
     </ul>
-   
-    
   ) : null
 }
