@@ -7,6 +7,7 @@ import LoginRoute from './routes/LoginRoute';
 import ErrorRoute from './routes/ErrorRoute';
 import UsersRoute from './routes/UsersRoute';
 import UserDetailsRoute from './routes/UserDetailsRoute';
+import UserDashboardRoute from './routes/UserDashboardRoute';
 
 
 export default function App() {
@@ -31,6 +32,10 @@ export default function App() {
         {
           path: `users/:id`,
           element: <UserDetailsRoute />
+        },
+        {
+          path: `dashboard`,
+          element:<UserDashboardRoute />
         }
       ],
       errorElement: <ErrorRoute />
