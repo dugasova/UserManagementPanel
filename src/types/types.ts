@@ -20,5 +20,7 @@ export type User = {
             state: string;
             postalCode: string;
         };
+        title: string;
     };
+    role: string;
 }

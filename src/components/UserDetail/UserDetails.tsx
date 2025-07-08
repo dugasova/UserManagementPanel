@@ -51,20 +51,26 @@ export default function UserDetails({ id }: UserDetailsProps) {
       <p><strong>Email: </strong> {details.email}</p>
       <p><strong>Phone: </strong> {details.phone}</p>
       <p><strong>Company: </strong>{details.company?.name}</p>
-      <p><strong>Company Address: </strong></p>
-      <ul>
-        <li><strong>Address: </strong> {details.company.address.address}</li>
-        <li><strong>City: </strong> {details.company.address.city}</li>
-        <li><strong>State: </strong> {details.company.address.state}</li>
-        <li><strong>Postal Code: </strong> {details.company.address.postalCode}</li>
-      </ul>
-      <p><strong>Personal Address: </strong></p>
+      <br />
+      <div className="address-separator"></div>
+      <p className='user-details__address'><strong>Personal Address: </strong></p>
       <ul>
         <li><strong>Address: </strong> {details.address.address}</li>
         <li><strong>City: </strong> {details.address.city}</li>
         <li><strong>State: </strong> {details.address.state}</li>
         <li><strong>Postal Code: </strong> {details.address.postalCode}</li>
       </ul>
-    </div>      
+      <br />
+      <div className="address-separator"></div>
+      <p><strong>Company Address: </strong></p>
+      
+      <ul>
+        <li><strong>Address: </strong> {details.company.address.address}</li>
+        <li><strong>City: </strong> {details.company.address.city}</li>
+        <li><strong>State: </strong> {details.company.address.state}</li>
+        <li><strong>Postal Code: </strong> {details.company.address.postalCode}</li>
+      </ul>
+
+    </div>
   );
 }

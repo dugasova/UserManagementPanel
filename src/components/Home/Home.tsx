@@ -3,26 +3,22 @@ import { Link } from 'react-router-dom';
 import './styles.scss';
 import getUsers from '../../services/user';
 import SkeletonLoader from '../SkeletonLoader/SkeletonLoader';
+import SearchUser from '../SearchUser/SearchUser';
+import type { User } from '../../types/types';
 
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string
-  email: string;
-  phone: string;
-  website: string;
-}
 
 export default function Home() {
   const [usersList, setUsersList] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
       const response = await getUsers.get();
       setUsersList(response.users);
+      setFilteredUsers(response.users); // Initialize filtered users with all users
       console.log("Users fetched successfully:", response);
     } catch (err) {
       console.error("Error fetching users:", err);
@@ -36,6 +32,18 @@ export default function Home() {
     fetchUsers();
   }, []);
 
+  const handleSearch = (searchTerm: string) => {
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    const newFilteredUsers = usersList.filter(user =>
+      user.firstName.toLowerCase().includes(lowercasedSearchTerm) ||
+      user.lastName.toLowerCase().includes(lowercasedSearchTerm) ||
+      user.email.toLowerCase().includes(lowercasedSearchTerm) ||
+      user.phone.toLowerCase().includes(lowercasedSearchTerm) ||
+      user.company.name.toLowerCase().includes(lowercasedSearchTerm)
+    );
+    setFilteredUsers(newFilteredUsers);
+  };
+
   if (loading) {
     return <SkeletonLoader />;
   }
@@ -47,7 +55,8 @@ export default function Home() {
   return (
     <div className="users-table-container">
       <h2>User Dashboard</h2>
-      {usersList.length > 0 ? (
+      <SearchUser onSearchChange={handleSearch} />
+      {filteredUsers.length > 0 ? (
         <table className="users-table">
           <thead>
             <tr>
@@ -60,7 +69,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {usersList.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.id}>
                 <td>
                   <Link to={`/users/${user.id}`}> {user.firstName} {user.lastName}</Link>

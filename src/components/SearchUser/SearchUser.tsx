@@ -1,8 +1,25 @@
-import React from 'react';
-import './style.scss'
+import React, { useState } from 'react';
+import './style.scss';
 
-export default function SearchUser() {
+interface SearchUserProps {
+  onSearchChange: (term: string) => void;
+}
+
+export default function SearchUser({ onSearchChange }: SearchUserProps) {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    onSearchChange(e.target.value);
+  };
+
   return (
-    <div>SearchUser</div>
-  )
+    <input
+      type="text"
+      placeholder="Search users..."
+      value={searchTerm}
+      onChange={handleChange}
+      className="user-search-input"
+    />
+  );
 }
