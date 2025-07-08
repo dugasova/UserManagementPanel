@@ -6,14 +6,20 @@
     margin-bottom: 20px;
   }
 
-  .user-search-input {
-    width: 50%;
-    padding: 10px;
+  .filters-container {
+    display: flex;
+    gap: 20px;
     margin-bottom: 20px;
+    align-items: center;
+  }
+
+  .user-search-input {
+    width: 50%; /* Adjusted width for better layout with filter */
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
-    box-sizing: border-box; /* Ensures padding doesn't increase the width */
+    box-sizing: border-box;
   }
 
   table {
