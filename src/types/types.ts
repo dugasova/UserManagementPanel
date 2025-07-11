@@ -23,4 +23,12 @@ export type User = {
         title: string;
     };
     role: string;
+    status: 'Active' | 'Blocked'; // Added user status
+}
+
+export type UserResponse = {
+    users: User[];
+    total: number;
+    skip: number;
+    limit: number;
 }

@@ -1,37 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.scss';
-import getUsers from '../../services/user';
-import type { User } from '../../types/types';
+import type { User } from '../../types/types'; // Re-enable User type import
 import FilterByRole from '../FilterByRole/FilterByRole';  
-
 import SearchUser from '../SearchUser/SearchUser';
 import { Link } from 'react-router-dom';
+import { useGetUsersQuery, useUpdateUserStatusMutation } from '../../store/api/usersApi';
 
 export default function Users() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, error, isLoading } = useGetUsersQuery();
+  const [updateUserStatus] = useUpdateUserStatusMutation();
+  const [localUsers, setLocalUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    if (data?.users) {
+      // Initialize status for users if not already present (e.g., from API)
+      const usersWithStatus = data.users.map(user => ({
+        ...user,
+        status: user.status || 'Active' // Default to 'Active' if status is not provided by API
+      }));
+      setLocalUsers(usersWithStatus);
+    }
+  }, [data]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('all'); // 'all', 'admin', 'moderator', 'user'
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await getUsers.get();
-        setUsers(response.users);
-      } catch (err) {
-        setError('Failed to fetch users.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, []);
+  const toggleUserStatus = async (userId: number, currentStatus: 'Active' | 'Blocked') => {
+    const newStatus = currentStatus === 'Active' ? 'Blocked' : 'Active';
+    try {
+      await updateUserStatus({ id: userId, status: newStatus }).unwrap();
+      // RTK Query's optimistic update handles the state change, no need to manually update localUsers here
+    } catch (err) {
+      console.error('Failed to update user status:', err);
+      // If the update fails, you might want to revert the optimistic update or refetch
+      // For now, the optimistic update's undo will handle it.
+    }
+  };
 
   const getFilteredAndSearchedUsers = () => {
-    let currentFilteredUsers = users;
+    let currentFilteredUsers = localUsers; // Use localUsers for filtering
 
     // Apply role filter
     if (selectedRole !== 'all') {
@@ -54,12 +61,12 @@ export default function Users() {
 
   const filteredAndSearchedUsers = getFilteredAndSearchedUsers();
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading users...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {'status' in error ? `Error: ${error.status}` : JSON.stringify(error)}</div>;
   }
 
   return (
@@ -84,6 +91,9 @@ export default function Users() {
             <th>Company Name</th>
             <th>Profession</th>
             <th>Role</th>
+            <th>Status</th> {/* New Status column */}
+            <th>Actions</th> {/* New Actions column */}
+            <th>Edit</th> {/* New Edit column */}
           </tr>
         </thead>
         <tbody>
@@ -97,7 +107,20 @@ export default function Users() {
               <td>{user.company.name}</td>
               <td>{user.company.title}</td>
               <td>{user.role}</td>
-
+              <td>{user.status}</td> {/* Display user status */}
+              <td>
+                <button 
+                  onClick={() => toggleUserStatus(user.id, user.status)}
+                  className={user.status === 'Active' ? 'block-button' : 'activate-button'}
+                >
+                  {user.status === 'Active' ? 'Block' : 'Activate'}
+                </button>
+              </td>
+              <td>
+                <Link to={`/users/${user.id}/edit`}>
+                  <button className="edit-button">Edit</button>
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>

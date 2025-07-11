@@ -1,40 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './styles.scss';
-import getUsers from '../../services/user';
-import type { User } from '../../types/types';
+// import type { User } from '../../types/types';
+import { useGetUserDetailsQuery } from '../../store/api/usersApi';
+import { Link } from 'react-router-dom';
 
 interface UserDetailsProps {
   id: number;
 }
 
 export default function UserDetails({ id }: UserDetailsProps) {
-  const [details, setDetails] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: details, error, isLoading } = useGetUserDetailsQuery(id);
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const resp = await getUsers.getDetails(id);
-        setDetails(resp);
-        console.log("User details fetched successfully:", resp);
-      } catch (err) {
-        setError('Failed to fetch user details.');
-        console.error("Error fetching user details:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDetails();
-  }, [id]);
-
-  if (loading) {
+  if (isLoading) {
     return <div>Loading user details...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {'status' in error ? `Error: ${error.status}` : JSON.stringify(error)}</div>;
   }
 
   if (!details) {
@@ -63,7 +45,7 @@ export default function UserDetails({ id }: UserDetailsProps) {
       <br />
       <div className="address-separator"></div>
       <p><strong>Company Address: </strong></p>
-      
+
       <ul>
         <li><strong>Address: </strong> {details.company.address.address}</li>
         <li><strong>City: </strong> {details.company.address.city}</li>
@@ -71,6 +53,9 @@ export default function UserDetails({ id }: UserDetailsProps) {
         <li><strong>Postal Code: </strong> {details.company.address.postalCode}</li>
       </ul>
 
+      <Link to={`/users/${details.id}/edit`}>
+        <button className="edit-button">Edit User</button>
+      </Link>
     </div>
   );
 }

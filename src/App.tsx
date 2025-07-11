@@ -8,6 +8,7 @@ import ErrorRoute from './routes/ErrorRoute';
 import UsersRoute from './routes/UsersRoute';
 import UserDetailsRoute from './routes/UserDetailsRoute';
 import UserDashboardRoute from './routes/UserDashboardRoute';
+import UserEditRoute from './routes/UserEditRoute'; // New import
 
 
 export default function App() {
@@ -32,6 +33,10 @@ export default function App() {
         {
           path: `users/:id`,
           element: <UserDetailsRoute />
+        },
+        {
+          path: `users/:id/edit`, // New edit route
+          element: <UserEditRoute />
         },
         {
           path: `dashboard`,
