@@ -1,8 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useGetUserDetailsQuery, useUpdateUserMutation } from '../../store/api/usersApi';
-import type { User } from '../../types/types';
 import './styles.scss';
+
+// Define the Zod schema for user editing
+const userEditSchema = z.object({
+  firstName: z.string().min(1, 'First Name is required'),
+  lastName: z.string().min(1, 'Last Name is required'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().optional(),
+  username: z.string().min(1, 'Username is required'),
+  role: z.enum(['admin', 'moderator', 'user'], {
+    errorMap: () => ({ message: 'Please select a valid role' }),
+  }),
+});
+
+type UserEditFormData = z.infer<typeof userEditSchema>;
 
 interface UserEditFormProps {
   id: number;
@@ -13,32 +29,32 @@ export default function UserEditForm({ id }: UserEditFormProps) {
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<Partial<User>>({});
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<UserEditFormData>({
+    resolver: zodResolver(userEditSchema),
+  });
 
   useEffect(() => {
     if (user) {
-      setFormData({
+      reset({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
         phone: user.phone,
         username: user.username,
-        role: user.role,
-        // Add other fields as needed for editing
+        role: user.role as 'admin' | 'moderator' | 'user', // Cast to match enum
       });
     }
-  }, [user]);
+  }, [user, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: UserEditFormData) => {
     if (id) {
       try {
-        await updateUser({ id, ...formData }).unwrap();
+        await updateUser({ id, ...data }).unwrap();
         navigate(`/users/${id}`); // Navigate back to user details after successful update
       } catch (err) {
         console.error('Failed to update user:', err);
@@ -62,75 +78,64 @@ export default function UserEditForm({ id }: UserEditFormProps) {
   return (
     <div className="user-edit-form-container">
       <h1>Edit User: {user.firstName} {user.lastName}</h1>
-      <form onSubmit={handleSubmit} className="user-edit-form">
+      <form onSubmit={handleSubmit(onSubmit)} className="user-edit-form">
         <div className="form-group">
           <label htmlFor="firstName">First Name:</label>
           <input
             type="text"
             id="firstName"
-            name="firstName"
-            value={formData.firstName || ''}
-            onChange={handleChange}
-            required
+            {...register('firstName')}
           />
+          {errors.firstName && <p className="error-message">{errors.firstName.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="lastName">Last Name:</label>
           <input
             type="text"
             id="lastName"
-            name="lastName"
-            value={formData.lastName || ''}
-            onChange={handleChange}
-            required
+            {...register('lastName')}
           />
+          {errors.lastName && <p className="error-message">{errors.lastName.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
-            name="email"
-            value={formData.email || ''}
-            onChange={handleChange}
-            required
+            {...register('email')}
           />
+          {errors.email && <p className="error-message">{errors.email.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="phone">Phone:</label>
           <input
             type="text"
             id="phone"
-            name="phone"
-            value={formData.phone || ''}
-            onChange={handleChange}
+            {...register('phone')}
           />
+          {errors.phone && <p className="error-message">{errors.phone.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input
             type="text"
             id="username"
-            name="username"
-            value={formData.username || ''}
-            onChange={handleChange}
-            required
+            {...register('username')}
           />
+          {errors.username && <p className="error-message">{errors.username.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="role">Role:</label>
           <select
             id="role"
-            name="role"
-            value={formData.role || ''}
-            onChange={handleChange}
-            required
+            {...register('role')}
           >
             <option value="">Select Role</option>
             <option value="admin">Admin</option>
             <option value="moderator">Moderator</option>
             <option value="user">User</option>
           </select>
+          {errors.role && <p className="error-message">{errors.role.message}</p>}
         </div>
         {/* Add more fields as necessary */}
         <button type="submit" disabled={isUpdating}>
