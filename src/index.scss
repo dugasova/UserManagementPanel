@@ -17,3 +17,56 @@ li {
   margin: 0;
   text-decoration: none;
 }
+
+:root {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #635cb8;
+  --primary-color-rgb: 0, 123, 255; /* RGB for #007bff */
+  --secondary-color: #6c757d;
+  --border-color: #dee2e6;
+  --card-background: #f8f9fa;
+  --input-background: #ffffff;
+  --input-border: #ced4da;
+  --button-background: #9c8ad8;
+  --button-text: #ffffff;
+  --error-color: #dc3545;
+  --success-color: #28a745;
+  --link-color: #3a3d6ee2;
+  --header-background: #f8f9fa;
+  --menu-background: #f8f9fa;
+  --menu-item-hover: #e9ecef;
+  --table-header-background: #e9ecef;
+  --table-row-hover: #f1f1f1;
+}
+
+[data-theme='dark'] {
+  --background-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --primary-color: #61dafb;
+  --primary-color-rgb: 97, 218, 251; /* RGB for #61dafb */
+  --primary-color-darker: #3a9dbf; /* Darker version of #61dafb */
+  --secondary-color: #8d8d8d;
+  --border-color: #333333;
+  --card-background: #2c2c2c;
+  --input-background: #333333;
+  --input-border: #444444;
+  --button-background: #61dafb;
+  --button-text: #1a1a1a;
+  --error-color: #ff6b6b;
+  --error-color-darker: #cc5656; /* Darker version of #ff6b6b */
+  --success-color: #4caf50;
+  --success-color-darker: #3d8b40; /* Darker version of #4caf50 */
+  --link-color: #61dafb;
+  --header-background: #2c2c2c;
+  --menu-background: #2c2c2c;
+  --menu-item-hover: #3a3a3a;
+  --table-header-background: #3a3a3a;
+  --table-row-hover: #444444;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

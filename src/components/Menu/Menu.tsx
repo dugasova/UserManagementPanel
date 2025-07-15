@@ -5,13 +5,15 @@ import Logo from './../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import AuthContext from '../../contexts/AuthContext';
-
+import { useTheme } from '../../hooks/useTheme';
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 
 export default function Menu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLElement>(null);
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -31,7 +33,7 @@ export default function Menu() {
     };
   }, [menuRef]);
 
-   const routes = [
+  const routes = [
     {
       path: `/`,
       title: `Home`,
@@ -48,7 +50,7 @@ export default function Menu() {
       authRequired: true,
     },
     {
-       path: `/dashboard`,
+      path: `/dashboard`,
       title: `Dashboard`,
       authRequired: true,
     },
@@ -69,7 +71,7 @@ export default function Menu() {
   };
 
   return (
-   
+
     <nav className='menu' ref={menuRef}>
       <div className='menu__logo'>
         <img className='menu__logo' src={Logo} alt="Logo" />
@@ -86,12 +88,16 @@ export default function Menu() {
           )
         )
         )}
-        <li className='menu__list-item'>
-          <button onClick={handleLoginLogout}>
-            {authContext?.isLoggedIn ? 'Logout' : 'Login'}
-          </button>
-        </li>
       </ul>
+      <div className="btn-right">
+        <button className="btn-right-login" onClick={handleLoginLogout}>
+          {authContext?.isLoggedIn ? 'Logout' : 'Login'}
+        </button>
+        <button className="theme-toggle-button" onClick={toggleTheme}>
+          <FontAwesomeIcon icon={theme === 'light' ? faMoon : faSun} size='2xl'/>
+        </button>
+
+      </div>
     </nav>
   )
 }

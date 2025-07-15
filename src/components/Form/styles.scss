@@ -4,8 +4,9 @@
   gap: 15px;
   padding: 30px;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: var(--card-background);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
   width: 100%;
   max-width: 400px;
   margin: 50px auto;
@@ -13,30 +14,31 @@
 }
 
 .error {
-  color: #e74c3c;
+  color: var(--error-color);
   font-size: 0.85em;
   margin-top: -10px;
   margin-bottom: 5px;
   text-align: left;
+  transition: color 0.3s ease;
 }
 
 button[type="submit"] {
   padding: 12px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--button-background);
+  color: var(--button-text);
   border: none;
   border-radius: 5px;
   font-size: 1em;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
 
   &:hover:not(:disabled) {
-    background-color: #0056b3;
+    background-color: var(--primary-color);
     transform: translateY(-2px);
   }
 
   &:disabled {
-    background-color: #cccccc;
+    background-color: var(--secondary-color);
     cursor: not-allowed;
   }
 }

@@ -1,0 +1,41 @@
+.skeleton-loader {
+  background-color: var(--card-background);
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+  transition: background-color 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.skeleton-text {
+  height: 1em;
+  margin-bottom: 0.5em;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+.skeleton-table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
+
+  .skeleton-cell {
+    height: 1em;
+    flex: 1;
+    margin-right: 10px;
+  }
+}

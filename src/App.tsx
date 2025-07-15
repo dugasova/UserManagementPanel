@@ -1,7 +1,6 @@
 import React, { lazy } from 'react';
 
 import Layout from './pages/Layout'
-// import './App.scss';
 import { AuthProvider } from './contexts/AuthContext';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomeRoute from './routes/HomeRoute';
