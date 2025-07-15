@@ -46,7 +46,7 @@ export default function UserEditForm({ id }: UserEditFormProps) {
         email: user.email,
         phone: user.phone,
         username: user.username,
-        role: user.role as 'admin' | 'moderator' | 'user', // Cast to match enum
+        role: user.role as 'admin' | 'moderator' | 'user',
       });
     }
   }, [user, reset]);
@@ -55,7 +55,7 @@ export default function UserEditForm({ id }: UserEditFormProps) {
     if (id) {
       try {
         await updateUser({ id, ...data }).unwrap();
-        navigate(`/users/${id}`); // Navigate back to user details after successful update
+        navigate(`/users/${id}`);
       } catch (err) {
         console.error('Failed to update user:', err);
         alert('Failed to update user. Please try again.');
@@ -137,7 +137,6 @@ export default function UserEditForm({ id }: UserEditFormProps) {
           </select>
           {errors.role && <p className="error-message">{errors.role.message}</p>}
         </div>
-        {/* Add more fields as necessary */}
         <button type="submit" disabled={isUpdating}>
           {isUpdating ? 'Saving...' : 'Save Changes'}
         </button>

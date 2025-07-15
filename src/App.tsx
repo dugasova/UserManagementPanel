@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 import Layout from './pages/Layout'
-import { createBrowserRouter, RouterProvider} from 'react-router-dom';
+// import './App.scss';
+import { AuthProvider } from './contexts/AuthContext';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomeRoute from './routes/HomeRoute';
 import LoginRoute from './routes/LoginRoute';
 import ErrorRoute from './routes/ErrorRoute';
-import UsersRoute from './routes/UsersRoute';
 import UserDetailsRoute from './routes/UserDetailsRoute';
-import UserDashboardRoute from './routes/UserDashboardRoute';
-import UserEditRoute from './routes/UserEditRoute'; // New import
+import AdminRoute from './routes/AdminRoute';
+import AuthGuard from './HOC/AuthGuard';
+
+const UsersRouteLazy = lazy(() => import('./routes/UsersRoute'));
+const UserDashboardRouteLazy = lazy(() => import('./routes/UserDashboardRoute'));
+const UserEditRouteLazy = lazy(() => import('./routes/UserEditRoute'));
 
 
 export default function App() {
-
   const router = createBrowserRouter([
     {
       path: `/`,
@@ -24,29 +28,35 @@ export default function App() {
         },
         {
           path: `login`,
-          element:<LoginRoute />
+          element: <LoginRoute />
         },
         {
-          path:  `users`,
-          element: <UsersRoute />
+          path: `users`,
+          element: <AuthGuard><UsersRouteLazy /></AuthGuard>
         },
         {
           path: `users/:id`,
-          element: <UserDetailsRoute />
+          element: <AuthGuard><UserDetailsRoute /></AuthGuard>
         },
         {
-          path: `users/:id/edit`, // New edit route
-          element: <UserEditRoute />
+          path: `users/:id/edit`,
+          element: <AuthGuard><UserEditRouteLazy /></AuthGuard>
         },
         {
           path: `dashboard`,
-          element:<UserDashboardRoute />
+          element: <AuthGuard><UserDashboardRouteLazy /></AuthGuard>
+        },
+        {
+          path:`admin`,
+          element: <AuthGuard><AdminRoute /></AuthGuard>
         }
       ],
       errorElement: <ErrorRoute />
     }
   ])
   return (
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   )
 }

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../contexts/AuthContext';
 import './styles.scss';
 import Input from '../Input/Input';
 
@@ -11,6 +13,9 @@ const scheme = z.object({
 })
 
 export default function Form() {
+  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
+
   const {
     control,
     handleSubmit,
@@ -25,12 +30,13 @@ export default function Form() {
     resolver: zodResolver(scheme)
   })
   const onSubmit = () => {
-    console.log('Form submitted')
+    console.log('Form submitted');
+    authContext?.login('dummy-token'); // Simulate login with a dummy token
     reset({
       email: '',
       password: ''
     });
-    alert('Form submitted successfully!');
+    navigate('/users'); 
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form-container">

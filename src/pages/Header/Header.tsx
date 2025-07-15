@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const navigate = useNavigate();
+
   return (
-    
     <header className='header'>
       <div className="logo-content" onClick={() => navigate('/')}>
       </div>
-        <Menu />
+      <Menu />
     </header>
   )
 }

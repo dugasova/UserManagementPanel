@@ -1,6 +1,5 @@
 import React from 'react';
 import './styles.scss';
-// import type { User } from '../../types/types';
 import { useGetUserDetailsQuery } from '../../store/api/usersApi';
 import { Link } from 'react-router-dom';
 
@@ -30,6 +29,8 @@ export default function UserDetails({ id }: UserDetailsProps) {
       <img src={details.image} alt={`${details.firstName} ${details.lastName}`} />
       <p><strong>Name: </strong> {details.firstName} {details.lastName}</p>
       <p><strong>Username: </strong> {details.username}</p>
+      <p><strong>User Role: </strong> {details.role}</p>
+
       <p><strong>Email: </strong> {details.email}</p>
       <p><strong>Phone: </strong> {details.phone}</p>
       <p><strong>Company: </strong>{details.company?.name}</p>
@@ -52,10 +53,14 @@ export default function UserDetails({ id }: UserDetailsProps) {
         <li><strong>State: </strong> {details.company.address.state}</li>
         <li><strong>Postal Code: </strong> {details.company.address.postalCode}</li>
       </ul>
-
-      <Link to={`/users/${details.id}/edit`}>
-        <button className="edit-button">Edit User</button>
-      </Link>
+      <div className="user-details-btn">
+        <Link to={`/users/${details.id}/edit`}>
+          <button className="edit-button">Edit User</button>
+        </Link>
+        <Link to="/users">
+          <button className="edit-button back-button">Back to Users</button>
+        </Link>
+      </div>
     </div>
   );
 }

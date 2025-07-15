@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles.scss';
-import type { User } from '../../types/types'; // Re-enable User type import
-import FilterByRole from '../FilterByRole/FilterByRole';  
+import type { User } from '../../types/types';
+import FilterByRole from '../FilterByRole/FilterByRole';
 import SearchUser from '../SearchUser/SearchUser';
 import { Link } from 'react-router-dom';
 import { useGetUsersQuery, useUpdateUserStatusMutation } from '../../store/api/usersApi';
@@ -29,11 +29,8 @@ export default function Users() {
     const newStatus = currentStatus === 'Active' ? 'Blocked' : 'Active';
     try {
       await updateUserStatus({ id: userId, status: newStatus }).unwrap();
-      // RTK Query's optimistic update handles the state change, no need to manually update localUsers here
     } catch (err) {
       console.error('Failed to update user status:', err);
-      // If the update fails, you might want to revert the optimistic update or refetch
-      // For now, the optimistic update's undo will handle it.
     }
   };
 
@@ -81,7 +78,7 @@ export default function Users() {
         Total Users: {filteredAndSearchedUsers.length}
       </div>
       <div className="users-table-header"></div>
-        <h2>Users Dashboard</h2>
+      <h2>Users Dashboard</h2>
       <table>
         <thead>
           <tr>
@@ -91,36 +88,30 @@ export default function Users() {
             <th>Company Name</th>
             <th>Profession</th>
             <th>Role</th>
-            <th>Status</th> {/* New Status column */}
-            <th>Actions</th> {/* New Actions column */}
-            <th>Edit</th> {/* New Edit column */}
+            <th>Status</th>
+            <th>Actions</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
           {filteredAndSearchedUsers.map((user) => (
             <tr key={user.id}>
-              <td>
-                <Link to={`/users/${user.id}`}> {user.firstName} {user.lastName}</Link>
-              </td>
+              <td><Link to={`/users/${user.id}`}> {user.firstName} {user.lastName}</Link></td>
               <td>{user.email}</td>
               <td>{user.phone}</td>
               <td>{user.company.name}</td>
               <td>{user.company.title}</td>
               <td>{user.role}</td>
-              <td>{user.status}</td> {/* Display user status */}
+              <td>{user.status}</td>
               <td>
-                <button 
+                <button
                   onClick={() => toggleUserStatus(user.id, user.status)}
                   className={user.status === 'Active' ? 'block-button' : 'activate-button'}
                 >
                   {user.status === 'Active' ? 'Block' : 'Activate'}
                 </button>
               </td>
-              <td>
-                <Link to={`/users/${user.id}/edit`}>
-                  <button className="edit-button">Edit</button>
-                </Link>
-              </td>
+              <td><Link to={`/users/${user.id}/edit`}><button className="edit-button">Edit</button></Link></td>
             </tr>
           ))}
         </tbody>
